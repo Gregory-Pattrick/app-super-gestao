@@ -14,6 +14,6 @@ class DatabaseSeeder extends Seeder
         #Incluindo uma chamada de uma seeder criada:
         $this->call(FornecedorSeeder::class);
         $this->call(SiteContatoSeeder::class);
-
+        $this->call(MotivoContatoSeeder::class);
     }
 }
