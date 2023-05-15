@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// use App\Http\Middleware\LogAcessoMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 //Chamando a rota a partir de um controllardor 
 
-#para nomear rotas usamos o metodo name
-#esse name não serve para navegação web mas sim como um apelido para nossa aplicação.
+#Para nomear rotas usamos o metodo name
+#Esse name não serve para navegação web mas sim como um apelido para nossa aplicação.
+// Route::middleware(LogAcessoMiddleware::class)->
+
 Route::get('/', 'PrincipalController@principal')->name('site.index');
 Route::get('/sobre-nos', 'SobreNosController@sobreNos')->name('site.sobrenos');
 Route::get('/contato', 'ContatoController@contato')->name('site.contato');
@@ -64,10 +67,11 @@ Route::post('/contato', 'ContatoController@salvar')->name('site.contato');
 //     }
 // )->where('categoria_id','[0-9]+')->where('nome', '[A-Za-z]+'); #Aqui definimos qual parâmetro terá uma expressão regular e qual será essa expressão.
 
-Route::get('/login', function(){return 'Login';})->name('site.login');
+Route::get('/login/{erro?}', 'LoginController@index')->name('site.login');
+Route::post('/login', 'LoginController@autenticar')->name('site.login');
 
 #Agrupamento de rotas usando um prefix
-Route::prefix('/app')->group(function(){
+Route::middleware('autenticacao:padrao,visitante')->prefix('/app')->group(function(){
     Route::get('/clientes', function(){return 'clientes';})->name('app.clientes');
     Route::get('/fornecedores', 'FornecedorController@index')->name('app.fornecedores');
     Route::get('/produtos', function(){return 'produtos';})->name('app.produtos');
