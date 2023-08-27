@@ -24,8 +24,5 @@ class AutenticacaoMiddleware
 
         #Se o usuário estiver logado segue para rota
         return $next($request);
-
-
-        
     }
 }
